@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Res,Param,Query, UsePipes, ValidationPipe, Body, ParseIntPipe, ParseBoolPipe, HttpException, HttpStatus, UseGuards, Patch, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res,Param,Query, UsePipes, ValidationPipe, Body, ParseIntPipe, ParseBoolPipe, HttpException, HttpStatus, UseGuards, Patch, Delete, Put, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { Request, Response } from 'express'; 
 
 import { CreateUserDto } from '../dtos/user.dto';
@@ -6,10 +6,10 @@ import { UserService } from '../services/user.service';
 import { AuthorGuard } from '../guard/author.guard';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ValidateCreateUserPipe } from '../pipes/validate-create-user.pipe';
-import { CreateProfileDto } from '../dtos/profile.dto';
 import { GetPostsDto } from '../dtos/post.dto';
 import { DeepPartial } from 'typeorm';
 import { Profile } from 'src/typeorm/entites/Profile';
+import { UserEntity } from 'src/util/types';
 
 /***
  * createUser(@Req() request: Request, @Res() response: Response){
@@ -26,6 +26,8 @@ import { Profile } from 'src/typeorm/entites/Profile';
 @UseGuards(AuthorGuard)
 export class UserController {
     constructor(private userService: UserService){}
+
+    @UseInterceptors(ClassSerializerInterceptor)
     @Get()
     @ApiOperation({
         summary:"获取用户列表",
@@ -34,6 +36,7 @@ export class UserController {
     getList(){
         return this.userService.getList();
     }
+
 
     @Patch("update/:id")
     updateUser(
@@ -57,9 +60,14 @@ export class UserController {
         return this.userService.create(userData);
     }
 
+
+    // 单个的密码过滤
+    @UseInterceptors(ClassSerializerInterceptor)
     @Get(":id")
-    getUserId(@Param('id', ParseIntPipe) id: number){  // ParseBoolPipe
-       return this.userService.getUserById(id);
+    async getUserId(@Param('id', ParseIntPipe) id: number){  // ParseBoolPipe
+       const user =  await this.userService.getUserById(id);
+       if(user) return new UserEntity(user);
+       else throw new HttpException("not found user", HttpStatus.BAD_REQUEST);
     }
 
 

@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { plainToInstance } from 'class-transformer';
 import { Posts } from 'src/typeorm/entites/Post';
 import { Profile } from 'src/typeorm/entites/Profile';
 import { User } from 'src/typeorm/entites/User';
-import { CreaterUserDto } from 'src/util/types';
+import { CreaterUserDto, UserEntity } from 'src/util/types';
 import { DeepPartial, Repository } from 'typeorm';
 import { GetPostsDto } from '../dtos/post.dto';
 
@@ -16,7 +17,17 @@ export class UserService {
   ) {}
 
   async getList() {
-    return await this.usersRepository.find({ relations: ['profile','posts'] });
+    // 这么写不需要 controller 的 @UseInterceptors 适合单个的
+    // 也不需要 UserEntity的constructor
+    // 适合批量的过滤
+    // const res = await this.usersRepository.find({ relations: ['profile','posts'] });
+    // const serialize = res.map(i=>plainToInstance(UserEntity,i));
+    // return serialize;
+
+
+    // 第二种写法 new UserEntity(user);也是官方比较推荐的写法
+    const res = await this.usersRepository.find({ relations: ['profile','posts'] });
+    return res.map(i=>new UserEntity(i));
   }
 
   async updateUser(id: number, data: Partial<CreaterUserDto>) {
