@@ -38,7 +38,7 @@ jobs:
         # Docker Hub password or Personal Access Token with read/write/delete scope
         password: ${{ secrets.DOCKER_HUB_TOKEN }}
         # Docker Hub repository in the format `<namespace>/<name>` Default: `github.repository`
-        repository: https://github.com/9a-aaaaaaaa
+        # repository: https://github.com/9a-aaaaaaaa/nest_api_blog.git
         # Docker Hub repository short description
         short-description: nest docker-compose    
 
