@@ -1,0 +1,62 @@
+#  先命令行设置密码
+#   docker run -d \
+# --name my-mysql \
+# -p 3306:3306 \
+# -v ~/apps/mysql:/var/lib/mysql \
+# --user 1000:1000 \
+# -e MYSQL_ROOT_PASSWORD=123456 \
+# -e MYSQL_PASSWORD=123456 \
+# -e MYSQL_USER=anikin \
+# -e MYSQL_DATABASE=user \
+# mysql:latest
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file: .env
+    volumes:
+      - ~/apps/mysql:/var/lib/mysql
+    networks:
+      - nest_api_server  
+    expose:
+      - "3306"
+
+  mongo: 
+    image: mongo:4.2.8
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - "./mongo/data/db:/mongo/data/db"
+      - "./mongo/log:/mongo/log"
+    networks:
+      - nest_api_server  
+    expose:
+      - "27017"
+
+  web:
+    image: qiuyanlong/nest_api_blog:v03
+    build: .
+    restart: always
+    # command: echo "hello world"  #bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; npm -v'
+    depends_on:
+      - mysql
+      - mongo
+    env_file: .env  
+    ports:
+      - "5000:5000"
+    networks:
+      - nest_api_server 
+
+networks:
+  nest_api_server: 
+    driver: bridge
+    name: nest_api_server
+    
+
+
+   

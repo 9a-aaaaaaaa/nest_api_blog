@@ -10,20 +10,23 @@ import { Profile } from './typeorm/entites/Profile';
 import { Posts } from './typeorm/entites/Post';
 
 
+const env = process.env;
+const mongodbUrl=`mongodb://my-blog-mongo-1:27017/?authMechanism=DEFAULT&authSource=admin`;
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: "my-blog-mysql-1",
       port: 3306,
-      username: 'root',
-      password: '123456',
-      database: 'userlist',
+      username: env.MYSQL_USER,
+      password:  env.MYSQL_ROOT_PASSWORD,
+      database: env.MYSQL_DATABASE,
       entities: [User,Profile,Posts], // 这里引入就会自动创建数据库的，不需要autoLoadEntities也可以
-      synchronize: true,
-      // autoLoadEntities: true,
+      // synchronize: true,
+      autoLoadEntities: true,
     }),
-    MongooseModule.forRoot('mongodb://qiuyanlong:123456@localhost:27017/?authMechanism=DEFAULT&authSource=admin'),
+    MongooseModule.forRoot(mongodbUrl),
     UserModule,
     PostModule
   ],
