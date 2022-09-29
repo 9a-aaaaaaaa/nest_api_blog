@@ -1,5 +1,14 @@
 
 ## DB
+
+本地使用方式
+
+```
+docker push qiuyanlong/nest_blog_api:tagname
+```
+
+下面是本地开发参考代码
+
 启动数据库相关的
 
 ```shell
@@ -21,7 +30,7 @@ http://localhost:5000/api-docs/
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. generate blog api
 
 ## Installation
 
@@ -65,9 +74,8 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- 9a_aaaaaa - [9a-aaaaaaaa]([https://kamilmysliwiec.com](https://github.com/9a-aaaaaaaa/nest_api_blog))
+
 
 ## License
 
