@@ -26,7 +26,7 @@ jobs:
       with:
           # 是否docker push
           push: true
-          tags: qiuyanlong/nest_blog_api:latest
+          tags: XXX/nest_blog_api:latest
           
     - name: Docker Hub Description
       # You may pin to the exact commit or the version.
@@ -38,7 +38,7 @@ jobs:
         # Docker Hub password or Personal Access Token with read/write/delete scope
         password: ${{ secrets.DOCKER_HUB_TOKEN }}
         # Docker Hub repository in the format `<namespace>/<name>` Default: `github.repository`
-        repository: qiuyanlong/nest_blog_api
+        repository: XXX/nest_blog_api
         # Docker Hub repository short description
         short-description: nest docker-compose    
 

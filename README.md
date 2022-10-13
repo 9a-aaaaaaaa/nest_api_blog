@@ -4,7 +4,7 @@
 本地使用方式
 
 ```
-docker push qiuyanlong/nest_blog_api:tagname
+docker push XXX/nest_blog_api:tagname
 ```
 
 下面是本地开发参考代码
